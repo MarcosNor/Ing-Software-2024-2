@@ -1,10 +1,7 @@
-# Ingeniería de Software 2024-2
-Repositorio oficial de la materia de Ingenieria de Software de la Facultad de Ciencias de la UNAM del semestre 2024-2
+# Nombre
 
-## Profesores:
+- Noriega Rodríguez Marcos Julián
 
-- Francisco Valdes Souto
-- Valeria Garcia Landa
-- Fernando Fong
-- Erick Martínez Piza
-- Rogelio Alcantar Arenas
+## Especificaciones:
+- Para el scrpt1, las instrucciones vienen especificadas al ejecutar el programa.
+- El script2, para el ejercicio del caminante se da un ejemplo de cómo va la cadena, van en mayúsculas y sin espacios; algún otro carácter dentro de la cadena no se tomará en cuenta, pero se informa que hay un carácter incorrecto
