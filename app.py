@@ -10,9 +10,9 @@ from model.model_alumno import borra_alumno
 
 #mysql+pymysql://ferfong:Developer123!@localhost:3306/ing_soft
 #<dialecto>+<driver>://<usuario>:<passwd>@localhost:3306/<db>
-#mysql+pymysql://lab:Developer123!@localhost:3306/lab_ing_soft
+mysql+pymysql://lab:Developer123!@localhost:3306/lab_ing_soft
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ferfong:Developer123!@localhost:3306/ing_soft'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://lab:Developer123!@localhost:3306/lab_ing_soft'
 app.config.from_mapping(
     SECRET_KEY='dev'
 )
