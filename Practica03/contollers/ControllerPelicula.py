@@ -1,9 +1,9 @@
 from flask import Blueprint, request, render_template, flash, url_for
 from random import randint
 
-usuario_blueprint = Blueprint('usuario', __name__, url_prefix='/usuario')
+pelicula_blueprint = Blueprint('pelicula', __name__, url_prefix='/pelicula')
 
-@usuario_blueprint.route('/') #localhost:5000/usuario/
+@pelicula_blueprint.route('/') #localhost:5000/usuario/
 def ver_usuarios():
     return "select * from usuario"
 
@@ -16,7 +16,7 @@ def ver_usuario_id(id_usuario, nombre):
 @usuario_blueprint.route('/agregar', methods=['GET', 'POST'])
 def agregar_usuario():
     if request.method == 'GET':
-        return render_template('add_user.html')
+        return render_template('Usuario/add_user.html')
     else:
         #Obtengo la información del método post.
         name = request.form['name']
@@ -34,4 +34,4 @@ def agregar_usuario():
             flash("Hello from flash!")
             return url_for('usuario.agregar_usuario')
         # Y regreso al flujo que me hayan especificado.
-        return render_template('user_added.html', name=name, num_cta=num_cta)
+        return render_template('Usuario/user_added.html', name=name, num_cta=num_cta)

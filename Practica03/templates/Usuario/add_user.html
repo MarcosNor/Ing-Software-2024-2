@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar alumno</title>
+    <title>Agregar usuario</title>
 </head>
 <body>
-    <h1>Crear un alumno</h1>
+    <h1>Crear un usuario</h1>
     <form method="post">
     <label for="name">Ingrese el nombre:</label>
     <input type="text" name="name" id="name"/>
@@ -22,7 +22,7 @@
     <label for="passwd">Ingrese el password:</label>
     <input type="password" name="passwd" id="passwd"/>
     <br>
-    <button>Crear alumno</button>
+    <button>Crear usuario</button>
     </form>
     {% if get_flashed_messages() %}
         {% for message in get_flashed_messages() %}
