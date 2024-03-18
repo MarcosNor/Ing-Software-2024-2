@@ -1,9 +1,8 @@
 from flask import Blueprint, request, render_template, flash, redirect, url_for
+from sqlalchemy import DateTime, func
 from sqlalchemy.exc import IntegrityError
 
 from alchemyClasses.Rentar import Rentar, db
-from alchemyClasses.Usuario import Usuario
-from alchemyClasses.Pelicula import Pelicula
 
 rentar_blueprint = Blueprint('rentar', __name__, url_prefix='/rentar')
 
@@ -16,39 +15,28 @@ def ver_rentas():
     rentas = db.session.query(Rentar, Usuario, Pelicula).join(Usuario).join(Pelicula).all()
     return render_template('Rentar/ver_todos.html', rentas=rentas)
 
-"""
-@rentar_blueprint.route('/id/<int:id_usuario>/<string:nombre>')
-def ver_usuario_id(id_usuario, nombre):
-    usuario = Usuario.query.filter_by(idUsuario=id_usuario).first()
-    if usuario:
-        return f"Nombre: {usuario.nombre}, Email: {usuario.email}"
-    else:
-        return "Usuario no encontrado"
-
-"""
-
 @rentar_blueprint.route('/agregar', methods=['GET', 'POST'])
 def agregar_renta():
     if request.method == 'POST':
-        nombre = request.form['nombre']
-        genero = request.form['genero']
-        duracion = request.form['duracion']
-        inventario = request.form['inventario']
+        id_usuario = request.form['idUsuario']
+        id_pelicula = request.form['idPelicula']
+        fecha_renta = func.now()
+        dias_de_renta = request.form.get('dias_de_renta', 5)
+        estatus = 0
 
-        #Si no funciona, agregar dos e en nombre y dos l en email
-
-        nueva_renta = Rentar(nombre=nombre, genero=genero, duracion=duracion, inventario=inventario)
+        nueva_renta = Rentar(idUsuario=id_usuario, idPelicula=id_pelicula, fecha_renta=fecha_renta, dias_de_renta=dias_de_renta, estatus=estatus)
         try:
             db.session.add(nueva_renta)
             db.session.commit()
-            flash('Película agregada correctamente', 'success')
+            flash('Renta agregada correctamente', 'success')
             return redirect(url_for('rentar.agregar_renta'))
         except IntegrityError:
             db.session.rollback()  # Revertir los cambios realizados en la transacción
-            flash('Error: El correo electrónico ya está registrado', 'error')
+            flash('Error al agregar la renta', 'error')
             return redirect(url_for('rentar.agregar_renta'))
 
     return render_template('Rentar/add_renta.html')
+
 
 
 @rentar_blueprint.route('/borrar', methods=['GET', 'POST'])

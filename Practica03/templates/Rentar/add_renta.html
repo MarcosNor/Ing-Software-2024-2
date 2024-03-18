@@ -2,24 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar pelicula</title>
+    <title>Agregar renta</title>
 </head>
 <body>
-    <h1>Crear una pelicula</h1>
-    <form action="{{ url_for('pelicula.agregar_pelicula') }}" method="POST">
-        <label for="nombre">Ingrese el nombre:</label>
-        <input type="text" name="nombre" id="nombre"/>
+    <h1>Crear una renta</h1>
+    <form action="{{ url_for('rentar.agregar_renta') }}" method="POST">
+        <label for="idUsuario">ID de usuario:</label>
+        <input type="number" name="idUsuario" id="idUsuario"/>
         <br>
-        <label for="genero">Ingrese el genero de la pelicula</label>
-        <input type="text" name="genero" id="genero"/>
+        <label for="idPelicula">ID de película:</label>
+        <input type="number" name="idPelicu la" id="idPelicula"/>
         <br>
-        <label for="duracion">Ingrese la duracion de la pelicula</label>
-        <input type="number" name="duracion" id="duracion"/>
+        <label for="dias_de_renta">Días de renta:</label>
+        <input type="number" name="dias_de_renta" id="dias_de_renta" value="5"/>
         <br>
-        <label for="inventario">Ingrese el inventario que hay</label>
-        <input type="number" name="inventario" id="inventario"/>
-        <br>
-        <button type="submit">Crear pelicula</button>
+        <button type="submit">Crear renta</button>
     </form>
     {% if get_flashed_messages() %}
         {% for message in get_flashed_messages() %}
@@ -27,6 +24,6 @@
         {% endfor %}
     {% endif %}
 
-    <button style="background-color: red; color: white; "onclick="window.location.href='/renta'">Regresar</button>
+    <button style="background-color: red; color: white; " onclick="window.location.href='/rentar'">Regresar</button>
 </body>
 </html>

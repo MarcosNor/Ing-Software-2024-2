@@ -1,7 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, LargeBinary, ForeignKey, DateTime
 from alchemyClasses import db
-from alchemyClasses.Usuario import Usuario
-from alchemyClasses.Pelicula import Pelicula
 
 
 class Rentar(db.Model):
