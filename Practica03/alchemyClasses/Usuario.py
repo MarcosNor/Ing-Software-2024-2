@@ -1,4 +1,3 @@
-#from flask_sqlalchemy.query import Query
 from sqlalchemy import Column, Integer, String, Boolean, LargeBinary
 from alchemyClasses import db
 

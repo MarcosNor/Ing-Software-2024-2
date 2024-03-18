@@ -1,37 +1,67 @@
-from flask import Blueprint, request, render_template, flash, url_for
-from random import randint
+from flask import Blueprint, request, render_template, flash, redirect, url_for
+from sqlalchemy.exc import IntegrityError
+
+from alchemyClasses.Pelicula import Pelicula, db
 
 pelicula_blueprint = Blueprint('pelicula', __name__, url_prefix='/pelicula')
 
-@pelicula_blueprint.route('/') #localhost:5000/usuario/
-def ver_usuarios():
-    return "select * from usuario"
+@pelicula_blueprint.route('/', methods=['GET'])
+def raiz():
+    return render_template('Pelicula/raiz.html')
 
-#responde a localhost:5000/usuario/id/1
-@usuario_blueprint.route('/id/<int:id_usuario>/<string:nombre>') #<tipo:nombre_variable>
+@pelicula_blueprint.route('/ver_todos', methods=['GET'])
+def ver_peliculas():
+    peliculas = Pelicula.query.all()
+    return render_template('Pelicula/ver_todos.html', peliculas=peliculas)
+
+"""
+@pelicula_blueprint.route('/id/<int:id_usuario>/<string:nombre>')
 def ver_usuario_id(id_usuario, nombre):
-    return f"Se hace el query con el id {id_usuario} y el nombre {nombre}"
-
-
-@usuario_blueprint.route('/agregar', methods=['GET', 'POST'])
-def agregar_usuario():
-    if request.method == 'GET':
-        return render_template('Usuario/add_user.html')
+    usuario = Usuario.query.filter_by(idUsuario=id_usuario).first()
+    if usuario:
+        return f"Nombre: {usuario.nombre}, Email: {usuario.email}"
     else:
-        #Obtengo la información del método post.
-        name = request.form['name']
-        ap_pat = request.form['ap_pat']
-        ap_mat = request.form['ap_mat']
-        num_cta = request.form['num_cta']
-        passwd = request.form['passwd']
-        #Creo mi usuario.
-        #alumno = Alumno(name, ap....)
-        #Lo guardo en la DB
-        #url_for
-        #flash
-        v = randint(0, 2)
-        if v == 1:
-            flash("Hello from flash!")
-            return url_for('usuario.agregar_usuario')
-        # Y regreso al flujo que me hayan especificado.
-        return render_template('Usuario/user_added.html', name=name, num_cta=num_cta)
+        return "Usuario no encontrado"
+
+"""
+
+@pelicula_blueprint.route('/agregar', methods=['GET', 'POST'])
+def agregar_pelicula():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        genero = request.form['genero']
+        duracion = request.form['duracion']
+        inventario = request.form['inventario']
+
+        #Si no funciona, agregar dos e en nombre y dos l en email
+
+        nueva_pelicula = Pelicula(nombre=nombre, genero=genero, duracion=duracion, inventario=inventario)
+        try:
+            db.session.add(nueva_pelicula)
+            db.session.commit()
+            flash('Película agregada correctamente', 'success')
+            return redirect(url_for('pelicula.agregar_pelicula'))
+        except IntegrityError:
+            db.session.rollback()  # Revertir los cambios realizados en la transacción
+            flash('Error: El correo electrónico ya está registrado', 'error')
+            return redirect(url_for('pelicula.agregar_pelicula'))
+
+    return render_template('Pelicula/add_pelicula.html')
+
+
+@pelicula_blueprint.route('/borrar', methods=['GET', 'POST'])
+def borrar_pelicula():
+    if request.method == 'GET':
+        return render_template('Usuario/borrar.html')
+    else:
+        idUsuario = request.form['idUsuario']
+
+        usuario_a_eliminar = Usuario.query.get(idUsuario)
+        # nuevo_usuario = Usuario(nombre=nombre, password=password, email=email)
+        if usuario_a_eliminar:
+            db.session.delete(usuario_a_eliminar)
+            db.session.commit()
+            return 'Usuario eliminado'
+            flash('Usuario eliminado correctamente', 'success')
+        else:
+            return 'Usuario no encontrado'

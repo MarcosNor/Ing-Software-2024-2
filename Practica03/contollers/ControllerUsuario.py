@@ -2,7 +2,6 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from sqlalchemy.exc import IntegrityError
 
 from alchemyClasses.Usuario import Usuario, db
-from model.Model_usuario import borra_usuario
 
 usuario_blueprint = Blueprint('usuario', __name__, url_prefix='/usuario')
 
@@ -13,8 +12,6 @@ def raiz():
 @usuario_blueprint.route('/ver_todos', methods=['GET'])
 def ver_usuarios():
     usuarios = Usuario.query.all()
-    for usuario in usuarios:
-        print(f"ID: {usuario.idUsuario}, Nombre: {usuario.nombre}, Email: {usuario.email}")
     return render_template('Usuario/ver_todos.html', usuarios=usuarios)
 
 @usuario_blueprint.route('/id/<int:id_usuario>/<string:nombre>')
@@ -36,7 +33,9 @@ def agregar_usuario():
         #profilePictureU = request.form['profilePicture']
         #superUserU = request.form['superUser']
 
-        nuevo_usuario = Usuario(nombre=nombree, apPat=ap_pat, apMat=ap_mat, password=passwd, email=email,
+        #Si no funciona, agregar dos e en nombre y dos l en email
+
+        nuevo_usuario = Usuario(nombre=nombre, apPat=ap_pat, apMat=ap_mat, password=passwd, email=email,
                                 profilePicture=None, superUser=0)
         try:
             db.session.add(nuevo_usuario)
@@ -67,3 +66,20 @@ def borrar_usuario():
             flash('Usuario eliminado correctamente', 'success')
         else:
             return 'Usuario no encontrado'
+
+
+@usuario_blueprint.route('/actualizar', methods=['POST'])
+def actualizar_usuario():
+    id_usuario = request.form['idUsuario']
+    actualiza = request.form['campoActualizar']
+    nuevo_valor = request.form['nuevoValor']
+    cursor = db.cursor()
+
+#    try:
+    sql = f"UPDATE usuarios SET {actualiza} = %s WHERE id = %s"
+    cursor.execute(sql, (nuevo_valor, id_usuario))
+    db.session.commit()
+#        mensaje = f"{actualiza.capitalize()} del usuario con ID {id_usuario} actualizado correctamente a '{nuevo_valor}'"
+#    except mysql.connector.Error as error:
+#        mensaje = f"Error al actualizar el campo del usuario: {error}"
+    return render_template('Usuario/actualizar_usuario.html')

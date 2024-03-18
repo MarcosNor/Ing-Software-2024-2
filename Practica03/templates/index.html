@@ -2,11 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pagina perrona</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clonbuster</title>
+    <style>
+        .imagen-esquina {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>Clonbuster</h1>
+    <h2>¿Qué quieres hacer?</h2>
     <button onclick="window.location.href='/usuario'">Ir a la página de usuario</button>
-
+    <button onclick="window.location.href='/pelicula'">Ir a la página de pelicula</button>
+    <button onclick="window.location.href='/renta'">Ir a la página de renta</button>
+    <img src="{{ url_for('static', filename='Clonbuster.jpeg') }}" alt="Descripción de la imagen" class="imagen-esquina">
 </body>
 </html>
