@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Borrar Usuario</title>
+    <title>Borrar pelicula</title>
 </head>
 <body>
-    <h1>Borrar Usuario</h1>
+    <h1>Borrar pelicula</h1>
     <form method="post">
-    <label for="idUsuario">Ingrese el ID:</label>
-    <input type="text" name="idUsuario" id="idUsuario"/>
+    <label for="idPelicula">Ingrese el ID:</label>
+    <input type="text" name="idPelicula" id="idPelicula"/>
     <br>
-    <button>Eliminar usuario</button>
+    <button>Eliminar pelicula</button>
     </form>
     {% if get_flashed_messages() %}
         {% for message in get_flashed_messages() %}
             <p>{{ message }}</p>
         {% endfor %}
     {% endif %}
+
+    <button onclick="window.location.href='/pelicula'">Regresar</button>
 </body>
 </html>

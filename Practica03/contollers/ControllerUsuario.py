@@ -67,19 +67,68 @@ def borrar_usuario():
         else:
             return 'Usuario no encontrado'
 
-
-@usuario_blueprint.route('/actualizar', methods=['POST'])
+"""
+@usuario_blueprint.route('/actualizar', methods=['GET', 'POST'])
 def actualizar_usuario():
-    id_usuario = request.form['idUsuario']
+    if request.method == 'GET':
+        return render_template('Usuario/borrar.html')
+    else:
+        idUsuario = request.form['idUsuario']
+
+        usuario_a_eliminar = Usuario.query.get(idUsuario)
+        # nuevo_usuario = Usuario(nombre=nombre, password=password, email=email)
+        if usuario_a_eliminar:
+
+            if request.method == 'POST':
+                nombre = request.form['nombre']
+                ap_pat = request.form['apPat']
+                ap_mat = request.form['apMat']
+                passwd = request.form['password']
+                email = request.form['email']
+                # profilePictureU = request.form['profilePicture']
+                # superUserU = request.form['superUser']
+
+                # Si no funciona, agregar dos e en nombre y dos l en email
+
+                usuario_actualizado = Usuario(nombre=nombre, apPat=ap_pat, apMat=ap_mat, password=passwd, email=email,
+                                        profilePicture=None, superUser=0)
+                try:
+                    db.session.delete(usuario_a_eliminar)
+                    db.session.commit()
+                    db.session.add(usuario_actualizado)
+                    db.session.commit()
+                    flash('Usuario agregado correctamente', 'success')
+                    return redirect(url_for('usuario.agregar_usuario'))
+                except IntegrityError:
+                    db.session.rollback()  # Revertir los cambios realizados en la transacción
+                    flash('Error: El correo electrónico ya está registrado', 'error')
+                    return redirect(url_for('usuario.agregar_usuario'))
+
+            return render_template('Usuario/add_user.html')
+
+            db.session.delete(usuario_a_eliminar)
+            db.session.commit()
+            return 'Usuario eliminado'
+            flash('Usuario eliminado correctamente', 'success')
+        else:
+            return 'Usuario no encontrado'
+"""
+
+@usuario_blueprint.route('/actualizar_usuario', methods=['POST'])
+def actualizar_usuario():
+    id_usuario = int(request.form['idUsuario'])
     actualiza = request.form['campoActualizar']
     nuevo_valor = request.form['nuevoValor']
-    cursor = db.cursor()
 
-#    try:
-    sql = f"UPDATE usuarios SET {actualiza} = %s WHERE id = %s"
-    cursor.execute(sql, (nuevo_valor, id_usuario))
-    db.session.commit()
-#        mensaje = f"{actualiza.capitalize()} del usuario con ID {id_usuario} actualizado correctamente a '{nuevo_valor}'"
-#    except mysql.connector.Error as error:
-#        mensaje = f"Error al actualizar el campo del usuario: {error}"
-    return render_template('Usuario/actualizar_usuario.html')
+    usuario = Usuario.query.get(id_usuario)
+    if usuario:
+        if hasattr(usuario, actualiza):  # Verifica si el atributo existe en el modelo Usuario
+            setattr(usuario, actualiza, nuevo_valor)
+            db.session.commit()
+            mensaje = f"{actualiza.capitalize()} del usuario con ID {id_usuario} actualizado correctamente a '{nuevo_valor}'"
+        else:
+            mensaje = f"No se puede actualizar el campo '{actualiza}'. Campo no válido."
+    else:
+        mensaje = f"No se encontró usuario con ID {id_usuario}"
+
+    return mensaje

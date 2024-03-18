@@ -52,16 +52,16 @@ def agregar_pelicula():
 @pelicula_blueprint.route('/borrar', methods=['GET', 'POST'])
 def borrar_pelicula():
     if request.method == 'GET':
-        return render_template('Usuario/borrar.html')
+        return render_template('Pelicula/borrar.html')
     else:
-        idUsuario = request.form['idUsuario']
+        idPelicula = request.form['idPelicula']
 
-        usuario_a_eliminar = Usuario.query.get(idUsuario)
-        # nuevo_usuario = Usuario(nombre=nombre, password=password, email=email)
-        if usuario_a_eliminar:
-            db.session.delete(usuario_a_eliminar)
+        pelicula_a_eliminar = Pelicula.query.get(idPelicula)
+        if pelicula_a_eliminar:
+            db.session.delete(pelicula_a_eliminar)
             db.session.commit()
-            return 'Usuario eliminado'
-            flash('Usuario eliminado correctamente', 'success')
+            flash('Pelicula eliminado correctamente', 'success')
+            return redirect(url_for('pelicula.borrar_pelicula'))
         else:
-            return 'Usuario no encontrado'
+            flash('Error: No se encontró la película', 'error')
+            return redirect(url_for('pelicula.borrar_pelicula'))
