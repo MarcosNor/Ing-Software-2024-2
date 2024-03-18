@@ -114,21 +114,22 @@ def actualizar_usuario():
             return 'Usuario no encontrado'
 """
 
-@usuario_blueprint.route('/actualizar_usuario', methods=['POST'])
+@usuario_blueprint.route('/actualizar', methods=['GET', 'POST'])
 def actualizar_usuario():
-    id_usuario = int(request.form['idUsuario'])
-    actualiza = request.form['campoActualizar']
-    nuevo_valor = request.form['nuevoValor']
+    if request.method == 'POST':
+        id_usuario = int(request.form['idUsuario'])
+        actualiza = request.form['campoActualizar']
+        nuevo_valor = request.form['nuevoValor']
 
-    usuario = Usuario.query.get(id_usuario)
-    if usuario:
-        if hasattr(usuario, actualiza):  # Verifica si el atributo existe en el modelo Usuario
-            setattr(usuario, actualiza, nuevo_valor)
-            db.session.commit()
-            mensaje = f"{actualiza.capitalize()} del usuario con ID {id_usuario} actualizado correctamente a '{nuevo_valor}'"
+        usuario = Usuario.query.get(id_usuario)
+        if usuario:
+            if hasattr(usuario, actualiza):  # Verifica si el atributo existe en el modelo Usuario
+                setattr(usuario, actualiza, nuevo_valor)
+                db.session.commit()
+                flash('Usuario actualizado correctamente', 'success')
+                return render_template('Usuario/actualizar.html')
+            else:
+                flash('No se puede actualizar el campo', 'error')
         else:
-            mensaje = f"No se puede actualizar el campo '{actualiza}'. Campo no válido."
-    else:
-        mensaje = f"No se encontró usuario con ID {id_usuario}"
-
-    return mensaje
+            flash('Usuario no encontrado', 'error')
+    return render_template('Usuario/actualizar.html')

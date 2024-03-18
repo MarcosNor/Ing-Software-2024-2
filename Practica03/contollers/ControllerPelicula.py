@@ -65,3 +65,24 @@ def borrar_pelicula():
         else:
             flash('Error: No se encontró la película', 'error')
             return redirect(url_for('pelicula.borrar_pelicula'))
+
+
+@pelicula_blueprint.route('/actualizar', methods=['GET', 'POST'])
+def actualizar_pelicula():
+    if request.method == 'POST':
+        id_pelicula = int(request.form['idPelicula'])
+        actualiza = request.form['campoActualizar']
+        nuevo_valor = request.form['nuevoValor']
+
+        pelicula = Pelicula.query.get(id_pelicula)
+        if pelicula:
+            if hasattr(pelicula, actualiza):
+                setattr(pelicula, actualiza, nuevo_valor)
+                db.session.commit()
+                flash('¡pelicula actualizada correctamente!', 'success')
+                return render_template('Pelicula/actualizar.html')
+            else:
+                flash('No se puede actualizar el campo', 'error')
+        else:
+            flash('Pelicula no encontrada', 'error')
+    return render_template('Pelicula/actualizar.html')
