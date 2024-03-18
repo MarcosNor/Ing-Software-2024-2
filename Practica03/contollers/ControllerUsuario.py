@@ -28,15 +28,15 @@ def ver_usuario_id(id_usuario, nombre):
 @usuario_blueprint.route('/agregar', methods=['GET', 'POST'])
 def agregar_usuario():
     if request.method == 'POST':
-        nombree = request.form['nombre']
+        nombre = request.form['nombre']
         ap_pat = request.form['apPat']
         ap_mat = request.form['apMat']
         passwd = request.form['password']
-        emaill = request.form['email']
+        email = request.form['email']
         #profilePictureU = request.form['profilePicture']
         #superUserU = request.form['superUser']
 
-        nuevo_usuario = Usuario(nombre=nombree, apPat=ap_pat, apMat=ap_mat, password=passwd, email=emaill,
+        nuevo_usuario = Usuario(nombre=nombree, apPat=ap_pat, apMat=ap_mat, password=passwd, email=email,
                                 profilePicture=None, superUser=0)
         try:
             db.session.add(nuevo_usuario)
@@ -51,7 +51,19 @@ def agregar_usuario():
     return render_template('Usuario/add_user.html')
 
 
-@usuario_blueprint.route('/borrar',  methods=['GET', 'POST'])
+@usuario_blueprint.route('/borrar', methods=['GET', 'POST'])
 def borrar_usuario():
-    #borra_usuario(1)
-    return "ola"
+    if request.method == 'GET':
+        return render_template('Usuario/borrar.html')
+    else:
+        idUsuario = request.form['idUsuario']
+
+        usuario_a_eliminar = Usuario.query.get(idUsuario)
+        # nuevo_usuario = Usuario(nombre=nombre, password=password, email=email)
+        if usuario_a_eliminar:
+            db.session.delete(usuario_a_eliminar)
+            db.session.commit()
+            return 'Usuario eliminado'
+            flash('Usuario eliminado correctamente', 'success')
+        else:
+            return 'Usuario no encontrado'
