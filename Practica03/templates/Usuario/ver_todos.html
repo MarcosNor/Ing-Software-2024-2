@@ -11,12 +11,12 @@
         <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>apPat</th>
-            <th>apMat</th>
-            <th>password</th>
+            <th>Apellido paterno</th>
+            <th>Apellido materno</th>
+            <th>Contraseña</th>
             <th>Email</th>
-            <th>ProfilePicture</th>
-            <th>SuperUser</th>
+            <th>Foto de perfil</th>
+            <th>SuperUsuario</th>
         </tr>
         {% for usuario in usuarios %}
         <tr>
@@ -31,5 +31,7 @@
         </tr>
         {% endfor %}
     </table>
+
+    <button onclick="window.location.href='/usuario'">Regresar</button>
 </body>
 </html>

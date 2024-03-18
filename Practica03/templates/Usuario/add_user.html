@@ -6,28 +6,31 @@
 </head>
 <body>
     <h1>Crear un usuario</h1>
-    <form method="post">
-    <label for="name">Ingrese el nombre:</label>
-    <input type="text" name="name" id="name"/>
-    <br>
-    <label for="ap_pat">Ingrese el apellido paterno:</label>
-    <input type="text" name="ap_pat" id="ap_pat"/>
-    <br>
-    <label for="ap_mat">Ingrese el apellido materno:</label>
-    <input type="text" name="ap_mat" id="ap_mat"/>
-    <br>
-    <label for="num_cta">Ingrese el numero de cta:</label>
-    <input type="text" name="num_cta" id="num_cta" minlength="8" maxlength="8"/>
-    <br>
-    <label for="passwd">Ingrese el password:</label>
-    <input type="password" name="passwd" id="passwd"/>
-    <br>
-    <button>Crear usuario</button>
+    <!--<form method="post" action="{{ url_for('usuario.agregar_usuario') }}">-->
+    <form action="{{ url_for('usuario.agregar_usuario') }}" method="POST">
+        <label for="nombre">Ingrese el nombre:</label>
+        <input type="text" name="nombre" id="nombre"/>
+        <br>
+        <label for="ap_pat">Ingrese el apellido paterno:</label>
+        <input type="text" name="apPat" id="apPat"/>
+        <br>
+        <label for="apMat">Ingrese el apellido materno:</label>
+        <input type="text" name="apMat" id="apMat"/>
+        <br>
+        <label for="password">Ingrese la contraseña:</label>
+        <input type="text" name="password" id="password"/>
+        <br>
+        <label for="email">Ingrese el email:</label>
+        <input type="email" name="email" id="email"/>
+        <br>
+        <button type="submit">Crear usuario</button>
     </form>
     {% if get_flashed_messages() %}
         {% for message in get_flashed_messages() %}
             <p>{{ message }}</p>
         {% endfor %}
     {% endif %}
+
+    <button onclick="window.location.href='/usuario'">Regresar</button>
 </body>
 </html>
