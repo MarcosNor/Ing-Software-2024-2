@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, LargeBinary
+from sqlalchemy import Column, Integer, String, Boolean, LargeBinary, ForeignKey, DateTime
 from alchemyClasses import db
+from alchemyClasses.Usuario import Usuario
+from alchemyClasses.Pelicula import Pelicula
 
 
 class Rentar(db.Model):
@@ -9,13 +11,13 @@ class Rentar(db.Model):
     idPelicula = Column(Integer, ForeignKey('peliculas.idPelicula'), nullable=False)
     fecha_renta = Column(DateTime, nullable=False)
     dias_de_renta = Column(Integer, default=5)
-    uperUser = Column(Boolean, nullable=True)
+    estatus = Column(Boolean, nullable=True)
 
 
-    def __init__(self, idUsuario, idPelicula, fechaRenta, dias_de_renta, estatus):
+    def __init__(self, idUsuario, idPelicula, fecha_renta, dias_de_renta, estatus):
         self.idUsuario = idUsuario
         self.idPelicula = idPelicula
-        self.fechaRenta = fechaRenta
+        self.fecha_renta = fecha_renta
         self.dias_de_renta = dias_de_renta
         self.estatus = estatus
 

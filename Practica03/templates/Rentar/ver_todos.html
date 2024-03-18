@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de peliculas</title>
+    <title>Lista de rentas</title>
 </head>
 <body>
-    <h1>Lista de Peliculas</h1>
+    <h1>Lista de rentas</h1>
     <table>
         <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Genero</th>
-            <th>Duracion</th>
-            <th>Inventario</th>
+            <th>Usuario</th>
+            <th>Pelicula</th>
+            <th>Fecha de Renta</th>
+            <th>Dias de Renta</th>
+            <th>Estatus</th>
         </tr>
-        {% for pelicula in peliculas %}
+        {% for renta, usuario, pelicula in rentas %}
         <tr>
-            <td>{{ pelicula.idPelicula }}</td>
+            <td>{{ renta.idRentar }}</td>
+            <td>{{ usuario.nombre }}</td>
             <td>{{ pelicula.nombre }}</td>
-            <td>{{ pelicula.genero }}</td>
-            <td>{{ pelicula.duracion }}</td>
-            <td>{{ pelicula.inventario }}</td>
+            <td>{{ renta.fecha_renta }}</td>
+            <td>{{ renta.dias_de_renta }}</td>
+            <td>{{ renta.estatus }}</td>
         </tr>
         {% endfor %}
     </table>
 
-    <button style="background-color: red; color: white; "onclick="window.location.href='/renta'">Regresar</button>
+    <button style="background-color: red; color: white; "onclick="window.location.href='/rentar'">Regresar</button>
 </body>
 </html>

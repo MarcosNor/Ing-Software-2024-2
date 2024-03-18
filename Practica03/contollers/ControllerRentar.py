@@ -2,6 +2,8 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from sqlalchemy.exc import IntegrityError
 
 from alchemyClasses.Rentar import Rentar, db
+from alchemyClasses.Usuario import Usuario
+from alchemyClasses.Pelicula import Pelicula
 
 rentar_blueprint = Blueprint('rentar', __name__, url_prefix='/rentar')
 
@@ -11,7 +13,7 @@ def raiz():
 
 @rentar_blueprint.route('/ver_todos', methods=['GET'])
 def ver_rentas():
-    rentas = Rentar.query.all()
+    rentas = db.session.query(Rentar, Usuario, Pelicula).join(Usuario).join(Pelicula).all()
     return render_template('Rentar/ver_todos.html', rentas=rentas)
 
 """

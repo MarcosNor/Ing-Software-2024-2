@@ -4,6 +4,7 @@ from alchemyClasses import db
 from contollers.PrimerControlador import mi_primer_blueprint
 from contollers.ControllerUsuario import usuario_blueprint
 from contollers.ControllerPelicula import pelicula_blueprint
+from contollers.ControllerRentar import rentar_blueprint
 
 app = Flask(__name__)
 app.static_folder = 'static'
@@ -15,6 +16,7 @@ db.init_app(app)
 app.register_blueprint(mi_primer_blueprint)
 app.register_blueprint(usuario_blueprint)
 app.register_blueprint(pelicula_blueprint)
+app.register_blueprint(rentar_blueprint)
 
 @app.route('/')
 def hello_world():  # put application's code here
