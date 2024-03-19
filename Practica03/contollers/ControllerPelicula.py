@@ -2,6 +2,7 @@ from flask import Blueprint, request, render_template, flash, redirect, url_for
 from sqlalchemy.exc import IntegrityError
 
 from alchemyClasses.Pelicula import Pelicula, db
+from alchemyClasses.Rentar import Rentar
 
 pelicula_blueprint = Blueprint('pelicula', __name__, url_prefix='/pelicula')
 
@@ -49,23 +50,31 @@ def agregar_pelicula():
     return render_template('Pelicula/add_pelicula.html')
 
 
+from alchemyClasses.Rentar import Rentar
+
+
 @pelicula_blueprint.route('/borrar', methods=['GET', 'POST'])
 def borrar_pelicula():
     if request.method == 'GET':
         return render_template('Pelicula/borrar.html')
     else:
         idPelicula = request.form['idPelicula']
-
         pelicula_a_eliminar = Pelicula.query.get(idPelicula)
+
         if pelicula_a_eliminar:
+            rentas_asociadas = Rentar.query.filter_by(idPelicula=idPelicula).all()
+            for renta in rentas_asociadas:
+                db.session.delete(renta)
+                db.session.commit()
+
             db.session.delete(pelicula_a_eliminar)
             db.session.commit()
-            flash('Pelicula eliminado correctamente', 'success')
+            flash('Pelicula eliminada correctamente', 'success')
             return redirect(url_for('pelicula.borrar_pelicula'))
+
         else:
             flash('Error: No se encontró la película', 'error')
             return redirect(url_for('pelicula.borrar_pelicula'))
-
 
 @pelicula_blueprint.route('/actualizar', methods=['GET', 'POST'])
 def actualizar_pelicula():

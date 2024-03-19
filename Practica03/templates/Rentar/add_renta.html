@@ -11,7 +11,7 @@
         <input type="number" name="idUsuario" id="idUsuario"/>
         <br>
         <label for="idPelicula">ID de película:</label>
-        <input type="number" name="idPelicu la" id="idPelicula"/>
+        <input type="number" name="idPelicula" id="idPelicula"/>
         <br>
         <label for="dias_de_renta">Días de renta:</label>
         <input type="number" name="dias_de_renta" id="dias_de_renta" value="5"/>
@@ -25,5 +25,6 @@
     {% endif %}
 
     <button style="background-color: red; color: white; " onclick="window.location.href='/rentar'">Regresar</button>
+    <img src="{{ url_for('static', filename='Clonbuster.jpeg') }}" alt="Descripción de la imagen" class="imagen-esquina">
 </body>
 </html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar renta</title>
+</head>
+<body>
+    <h2>Actualizar estatus de renta</h2>
+
+    <form action="{{ url_for('rentar.actualizar_renta') }}" method="POST">
+        <label for="idRentar">ID de la renta:</label>
+        <input type="text" id="idRentar" name="idRentar">
+        <br>
+        <label for="estatus">Nuevo estatus:</label>
+        <input type="number" id="estatus" name="estatus">
+        <br>
+        <button type="submit">Actualizar estatus</button>
+    </form>
+
+    {% if get_flashed_messages() %}
+        {% for message in get_flashed_messages() %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <button style="background-color: red; color: white; "onclick="window.location.href='/rentar'">Regresar</button>
+    <img src="{{ url_for('static', filename='Clonbuster.jpeg') }}" alt="Descripción de la imagen" class="imagen-esquina">
+</body>
+</html>

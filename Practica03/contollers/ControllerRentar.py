@@ -3,6 +3,8 @@ from sqlalchemy import DateTime, func
 from sqlalchemy.exc import IntegrityError
 
 from alchemyClasses.Rentar import Rentar, db
+from alchemyClasses.Usuario import Usuario
+from alchemyClasses.Pelicula import Pelicula
 
 rentar_blueprint = Blueprint('rentar', __name__, url_prefix='/rentar')
 
@@ -37,21 +39,21 @@ def agregar_renta():
 
     return render_template('Rentar/add_renta.html')
 
+@rentar_blueprint.route('/actualizar', methods=['GET', 'POST'])
+def actualizar_renta():
+    if request.method == 'POST':
+        id_rentar = int(request.form['idRentar'])
+        nuevo_valor = request.form['nuevoValor']
 
-
-@rentar_blueprint.route('/borrar', methods=['GET', 'POST'])
-def borrar_renta():
-    if request.method == 'GET':
-        return render_template('Rentar/borrar.html')
-    else:
-        idRentar = request.form['idRentar']
-
-        renta_a_eliminar = Rentar.query.get(idRentar)
-        if renta_a_eliminar:
-            db.session.delete(renta_a_eliminar)
-            db.session.commit()
-            flash('Renta eliminada correctamente', 'success')
-            return redirect(url_for('renta.borrar'))
+        rentar = Rentar.query.get(id_rentar)
+        if rentar:
+            if hasattr(rentar, nuevo_valor):
+                setattr(rentar, rentar.estatus, nuevo_valor)
+                db.session.commit()
+                flash('Estatus actualizado correctamente', 'success')
+                return render_template('Rentar/actualizar.html')
+            else:
+                flash('No se puede actualizar el campo', 'error')
         else:
-            flash('Error: No se encontró la película', 'error')
-            return redirect(url_for('renta.borrar_renta'))
+            flash('Renta no encontrada', 'error')
+    return render_template('Rentar/actualizar.html')
